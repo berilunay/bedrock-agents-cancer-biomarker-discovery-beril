@@ -26,16 +26,16 @@ def bar_chart(title, x_values, y_values, x_label, y_label):
     img_data = io.BytesIO()
     fig.savefig(img_data, format='png')
     img_data.seek(0)
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket('s3')
-    KEY = 'graphs/' + str(output_name)
-    bucket.put_object(Body=img_data, ContentType='image/png', Key=KEY)
+    #s3 = boto3.resource('s3')
+    #bucket = s3.Bucket('s3')
+    #KEY = 'graphs/' + str(output_name)
+    #bucket.put_object(Body=img_data, ContentType='image/png', Key=KEY)
     
     
     result = f'Your bar chart named {title} is saved'
     print(result)
 
-    # Returns the figure object
+    
     return 
 
 
