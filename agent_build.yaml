@@ -1548,17 +1548,17 @@ Resources:
                 - !Sub 'arn:aws:s3:::${S3Bucket}'
                 - !Sub 'arn:aws:s3:::${S3Bucket}/*'
 
-MatplotlibLayer:
-  Type: AWS::Lambda::LayerVersion
-  DependsOn: DataRetrievalLogic
-  Properties:
-    LayerName: matplotliblayer
-    Description: Layer containing matplotlib and its dependencies
-    Content:
-      S3Bucket: !Ref S3Bucket
-      S3Key: lambda-layer.zip
-    CompatibleRuntimes:
-      - python3.10
+  MatplotlibLayer:
+    Type: AWS::Lambda::LayerVersion
+    DependsOn: DataRetrievalLogic
+    Properties:
+      LayerName: matplotliblayer
+      Description: Layer containing matplotlib and its dependencies
+      Content:
+        S3Bucket: !Ref S3Bucket
+        S3Key: lambda-layer.zip
+      CompatibleRuntimes:
+        - python3.10
     
 
   MatPlotBarChartLambdaFunction:
