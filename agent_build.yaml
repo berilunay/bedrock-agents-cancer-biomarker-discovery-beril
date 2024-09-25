@@ -1531,7 +1531,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: MatPlotBarChartLambdaPolicy
+        - PolicyName: S3ObjectPolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -1539,6 +1539,7 @@ Resources:
                 Action:
                   - s3:PutObject
                   - s3:GetObject
+                  - s3:ListBucket
                 Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
 
 
@@ -1552,8 +1553,8 @@ Resources:
         S3Bucket: !Ref S3Bucket 
         S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
       Runtime: python3.12  # Adjust as needed
-      Timeout: 300
-      MemorySize: 256
+      Timeout: 200
+      MemorySize: 128
       Environment:
         Variables:
           S3_BUCKET: !Ref S3Bucket
