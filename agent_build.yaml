@@ -312,6 +312,12 @@ Resources:
                 - mv ActionGroups/survivaldataprocessinglambda/survivaldataprocessinglambda.zip .
                 - aws s3 cp survivaldataprocessinglambda.zip s3://${S3Bucket}/survivaldataprocessinglambda.zip
                 - echo "Build phase completed"
+                - echo "lambda layer preperation phase starts"
+                - mkdir -p python
+                - pip install -r lambdalayers/requirements.txt -t python
+                - zip -r9 lambda-layer.zip python
+                - aws s3 cp lambda-layer.zip s3://${S3_BUCKET}/lambda-layer.zip
+
       TimeoutInMinutes: 10
 
 
@@ -1542,7 +1548,18 @@ Resources:
                 - !Sub 'arn:aws:s3:::${S3Bucket}'
                 - !Sub 'arn:aws:s3:::${S3Bucket}/*'
 
-
+MatplotlibLayer:
+  Type: AWS::Lambda::LayerVersion
+  DependsOn: DataRetrievalLogic
+  Properties:
+    LayerName: matplotliblayer
+    Description: Layer containing matplotlib and its dependencies
+    Content:
+      S3Bucket: !Ref S3Bucket
+      S3Key: lambda-layer.zip
+    CompatibleRuntimes:
+      - python3.10
+    
 
   MatPlotBarChartLambdaFunction:
     Type: AWS::Lambda::Function
@@ -1554,9 +1571,11 @@ Resources:
       Code:
         S3Bucket: !Ref S3Bucket 
         S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
-      Runtime: python3.12  # Adjust as needed
+      Runtime: python3.10  # Adjust as needed
       Timeout: 500
       MemorySize: 128
+      Layers:
+        - !Ref MatplotlibLayer
       Environment:
         Variables:
           S3_BUCKET: !Ref S3Bucket
