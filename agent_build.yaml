@@ -295,14 +295,6 @@ Resources:
                 - echo "Moving zip file to project root..."
                 - mv ActionGroups/querydatabaselambda/querydatabaselambda.zip .
                 - aws s3 cp querydatabaselambda.zip s3://${S3Bucket}/querydatabaselambda.zip
-                - cd ActionGroups/matplotbarchartlambda
-                - echo "Creating list of items to zip..."
-                - items_to_zip=$(ls -A | tr '\n' ' ')
-                - zip -r matplotbarchartlambda.zip $items_to_zip
-                - cd ../..
-                - echo "Moving zip file to project root..."
-                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip
-                - aws s3 cp matplotbarchartlambda.zip s3://${S3Bucket}/matplotbarchartlambda.zip
                 - cd ActionGroups/survivaldataprocessinglambda
                 - echo "Creating list of items to zip..."
                 - items_to_zip=$(ls -A | tr '\n' ' ')
@@ -311,6 +303,14 @@ Resources:
                 - echo "Moving zip file to project root..."
                 - mv ActionGroups/survivaldataprocessinglambda/survivaldataprocessinglambda.zip .
                 - aws s3 cp survivaldataprocessinglambda.zip s3://${S3Bucket}/survivaldataprocessinglambda.zip
+                - cd ActionGroups/matplotbarchartlambda
+                - echo "Creating list of items to zip..."
+                - items_to_zip=$(ls -A | tr '\n' ' ')
+                - zip -r matplotbarchartlambda.zip $items_to_zip
+                - cd ../..
+                - echo "Moving zip file to project root..."
+                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip
+                - aws s3 cp matplotbarchartlambda.zip s3://${S3Bucket}/matplotbarchartlambda.zip
                 - echo "Build phase completed"
       TimeoutInMinutes: 10
 
