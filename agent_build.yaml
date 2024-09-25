@@ -316,7 +316,7 @@ Resources:
                 - mkdir -p python
                 - pip install -r lambdalayers/requirements.txt -t python
                 - zip -r9 lambda-layer.zip python
-                - aws s3 cp lambda-layer.zip s3://${S3_BUCKET}/lambda-layer.zip
+                - aws s3 cp lambda-layer.zip s3://${S3Bucket}/lambda-layer.zip
 
       TimeoutInMinutes: 10
 
