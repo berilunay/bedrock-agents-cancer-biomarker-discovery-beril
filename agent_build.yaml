@@ -1531,7 +1531,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: S3ObjectPolicy
+        - PolicyName: MatPlotBarChartLambdaPolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -1540,7 +1540,10 @@ Resources:
                   - s3:PutObject
                   - s3:GetObject
                   - s3:ListBucket
-                Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
+                Resource: 
+                - !Sub 'arn:aws:s3:::${S3Bucket}'
+                - !Sub 'arn:aws:s3:::${S3Bucket}/*'
+
 
 
   MatPlotBarChartLambdaFunction:
