@@ -1548,6 +1548,7 @@ Resources:
 
   MatPlotBarChartLambdaFunction:
     Type: AWS::Lambda::Function
+    DependsOn: ImagingBiomarkerLambda
     Properties:
       FunctionName: MatPlotBarChartLambda
       Handler: matplotbarchartlambda.handler  # Adjust this to match your Lambda function's entry point
