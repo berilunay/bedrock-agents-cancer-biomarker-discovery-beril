@@ -301,7 +301,7 @@ Resources:
                 - zip -r matplotbarchartlambda.zip $items_to_zip
                 - cd ../..
                 - echo "Moving zip file to project root..."
-                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip .
+                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip
                 - aws s3 cp matplotbarchartlambda.zip s3://${S3Bucket}/matplotbarchartlambda.zip
                 - cd ActionGroups/survivaldataprocessinglambda
                 - echo "Creating list of items to zip..."
@@ -1518,22 +1518,6 @@ Resources:
       SourceArn: !GetAtt AgentResource.AgentArn
 
 
-  MatPlotBarChartLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: MatPlotBarChartLambda
-      Handler: matplotbarchartlambda.handler  # Adjust this to match your Lambda function's entry point
-      Role: !GetAtt MatPlotBarChartLambdaExecutionRole.Arn  # You'll need to create this role
-      Code:
-        S3Bucket: !Ref S3Bucket 
-        S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
-      Runtime: python3.12  # Adjust as needed
-      Timeout: 300
-      MemorySize: 256
-      Environment:
-        Variables:
-          S3_BUCKET: !Ref S3Bucket
-
   MatPlotBarChartLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -1556,6 +1540,24 @@ Resources:
                   - s3:PutObject
                   - s3:GetObject
                 Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
+
+
+  MatPlotBarChartLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: MatPlotBarChartLambda
+      Handler: matplotbarchartlambda.handler  # Adjust this to match your Lambda function's entry point
+      Role: !GetAtt MatPlotBarChartLambdaExecutionRole.Arn  # You'll need to create this role
+      Code:
+        S3Bucket: !Ref S3Bucket 
+        S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
+      Runtime: python3.12  # Adjust as needed
+      Timeout: 300
+      MemorySize: 256
+      Environment:
+        Variables:
+          S3_BUCKET: !Ref S3Bucket
+
 
   MatPlotBarChartLambdaPermission:
     Type: AWS::Lambda::Permission
