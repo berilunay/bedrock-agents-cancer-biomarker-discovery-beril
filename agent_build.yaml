@@ -277,6 +277,14 @@ Resources:
                 - echo "Cloning Git repository..."
                 - git clone ${GitRepoURL} repo
                 - echo "Zipping Lambda function..."
+                - cd ActionGroups/matplotbarchartlambda
+                - echo "Creating list of items to zip..."
+                - items_to_zip=$(ls -A | tr '\n' ' ')
+                - zip -r matplotbarchartlambda.zip $items_to_zip
+                - cd ../..
+                - echo "Moving zip file to project root..."
+                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip .
+                - aws s3 cp matplotbarchartlambda.zip s3://${S3Bucket}/matplotbarchartlambda.zip
                 - cd repo/ActionGroups/pubmed-lambda-function
                 - echo "Creating list of items to zip..."
                 - items_to_zip=$(ls -A | tr '\n' ' ')
@@ -303,14 +311,6 @@ Resources:
                 - echo "Moving zip file to project root..."
                 - mv ActionGroups/survivaldataprocessinglambda/survivaldataprocessinglambda.zip .
                 - aws s3 cp survivaldataprocessinglambda.zip s3://${S3Bucket}/survivaldataprocessinglambda.zip
-                - cd ActionGroups/matplotbarchartlambda
-                - echo "Creating list of items to zip..."
-                - items_to_zip=$(ls -A | tr '\n' ' ')
-                - zip -r matplotbarchartlambda.zip $items_to_zip
-                - cd ../..
-                - echo "Moving zip file to project root..."
-                - mv ActionGroups/matplotbarchartlambda/matplotbarchartlambda.zip .
-                - aws s3 cp matplotbarchartlambda.zip s3://${S3Bucket}/matplotbarchartlambda.zip
                 - echo "Build phase completed"
       TimeoutInMinutes: 10
 
@@ -1556,7 +1556,7 @@ Resources:
         S3Bucket: !Ref S3Bucket 
         S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
       Runtime: python3.12  # Adjust as needed
-      Timeout: 200
+      Timeout: 500
       MemorySize: 128
       Environment:
         Variables:
