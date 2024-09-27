@@ -1550,7 +1550,6 @@ Resources:
 
   MatplotlibLayer:
     Type: AWS::Lambda::LayerVersion
-    DependsOn: DataRetrievalLogic
     Properties:
       LayerName: matplotliblayer
       Description: Layer containing matplotlib and its dependencies
