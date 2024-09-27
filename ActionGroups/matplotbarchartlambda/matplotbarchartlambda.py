@@ -9,6 +9,9 @@ import io
 import boto3
 import ast
 
+
+s3_bucket = os.environ['S3_BUCKET']
+
 def bar_chart(title, x_values, y_values, x_label, y_label):
     
     x_values_parsed= ast.literal_eval(x_values)
@@ -26,23 +29,19 @@ def bar_chart(title, x_values, y_values, x_label, y_label):
     img_data = io.BytesIO()
     fig.savefig(img_data, format='png')
     img_data.seek(0)
-    #s3 = boto3.resource('s3')
-    #bucket = s3.Bucket('s3')
-    #KEY = 'graphs/' + str(output_name)
-    #bucket.put_object(Body=img_data, ContentType='image/png', Key=KEY)
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(s3_bucket)
+    KEY = 'graphs/' + str(output_name)
+    bucket.put_object(Body=img_data, ContentType='image/png', Key=KEY)
     
     
-    result = f'Your bar chart named {title} is saved'
+    result = f'Your bar chart named {title} is saved to your s3 bucket'
     print(result)
 
-    
     return 
 
 
-
-
-
-def lambda_handler(event, context):
+def handler(event, context):
     # TODO implement
     
     agent = event['agent']
