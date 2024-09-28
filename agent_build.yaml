@@ -1558,7 +1558,7 @@ Resources:
         S3Bucket: !Ref S3Bucket
         S3Key: lambda-layer.zip
       CompatibleRuntimes:
-        - python3.10
+        - python3.11
     
 
   MatPlotBarChartLambdaFunction:
