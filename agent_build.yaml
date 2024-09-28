@@ -1566,12 +1566,12 @@ Resources:
     DependsOn: ImagingBiomarkerLambda
     Properties:
       FunctionName: MatPlotBarChartLambda
-      Handler: matplotbarchartlambda.handler  # Adjust this to match your Lambda function's entry point
-      Role: !GetAtt MatPlotBarChartLambdaExecutionRole.Arn  # You'll need to create this role
+      Handler: matplotbarchartlambda.handler  
+      Role: !GetAtt MatPlotBarChartLambdaExecutionRole.Arn  
       Code:
         S3Bucket: !Ref S3Bucket 
-        S3Key: matplotbarchartlambda.zip  # Make sure this matches your deployment package name
-      Runtime: python3.10  # Adjust as needed
+        S3Key: matplotbarchartlambda.zip  
+      Runtime: python3.11  
       Timeout: 500
       MemorySize: 128
       Layers:
