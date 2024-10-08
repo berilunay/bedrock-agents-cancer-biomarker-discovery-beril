@@ -910,7 +910,6 @@ Resources:
       ActionGroups:
         - ActionGroupName: sqlActionGroup
           Description: Action for getting the database schema and querying the database
-          ParentActionGroupSignature: AMAZON.UserInput
           ActionGroupExecutor: 
             Lambda: !GetAtt AgentLambdaFunction.Arn
           ApiSchema:
