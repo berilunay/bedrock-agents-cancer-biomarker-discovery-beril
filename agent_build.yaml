@@ -1131,6 +1131,7 @@ Resources:
 
         - ActionGroupName: matplotbarchart
           Description: Creates a bar chart from the given input values
+          ParentActionGroupSignature: "AMAZON.UserInput"
           ActionGroupExecutor: 
             Lambda: !GetAtt MatPlotBarChartLambdaFunction.Arn
           FunctionSchema:
