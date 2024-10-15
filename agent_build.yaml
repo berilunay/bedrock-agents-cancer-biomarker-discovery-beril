@@ -5,7 +5,7 @@ Parameters:
   BedrockModelId:
     Type: String
     Description: The ID of the Foundation Model to use for the Agent
-    Default: anthropic.claude-3-sonnet-20240229-v1:0
+    Default: us.anthropic.claude-3-5-sonnet-20240620-v1:0
   EnvironmentName:
     Type: String
     Description: The name of the agent environment, used to differentiate agent application. Must be lowercase, contain one number, and be no more than 5 characters long.
@@ -29,6 +29,10 @@ Parameters:
     Type: String
     Default: vector-index
     Description: Name of the vector index to be created
+  GitBranch:
+    Type: String
+    Description: 'The github branch to clone, change only for dev testing'
+    Default: 'main'
 
 
 Mappings:
@@ -275,7 +279,7 @@ Resources:
                 - aws s3 cp ncbi_article.pdf s3://${S3Bucket}/ncbi_article.pdf
                 - echo "NCBI article uploaded to S3"
                 - echo "Cloning Git repository..."
-                - git clone ${GitRepoURL} repo
+                - git clone -b ${GitBranch} --single-branch ${GitRepoURL} repo
                 - echo "Zipping Lambda function..."
                 - cd ActionGroups/matplotbarchartlambda
                 - echo "Creating list of items to zip..."
@@ -354,7 +358,7 @@ Resources:
               commands:
                 - echo "Starting build phase"
                 - echo "Cloning Git repository..."
-                - git clone ${GitRepoURL} repo
+                - git clone -b ${GitBranch} --single-branch ${GitRepoURL} repo
                 - cd repo/ActionGroups/scientific-plots-with-lifelines
                 - echo "Building Docker image..."
                 - docker build -t lifelines-python3.12-v2 .
@@ -400,7 +404,7 @@ Resources:
                 - echo Logging in to Amazon ECR...
                 - aws ecr get-login-password --region ${AWS::Region} | docker login --username AWS --password-stdin ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com
                 - echo Cloning the repository...
-                - git clone ${GitRepoURL} repo
+                - git clone -b ${GitBranch} --single-branch ${GitRepoURL} repo
                 - cd repo/ActionGroups/imaging-biomarker 
                 - echo Checking for required files...
                 - ls -la
@@ -1524,6 +1528,7 @@ Resources:
       Principal: bedrock.amazonaws.com
       SourceArn: !GetAtt AgentResource.AgentArn
 
+  #------Add New Actions Here -----#
 
   MatPlotBarChartLambdaExecutionRole:
     Type: AWS::IAM::Role

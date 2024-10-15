@@ -62,7 +62,7 @@ def handler(event, context):
         print('successfully finished')
         responseBody = {
             "TEXT": {
-                "body": "The function {} was called successfully!".format(function)
+                "body": "The function {} was called successfully and your chart is saved in S3 bucket!".format(function)
             }
         }
     except Exception as e:
