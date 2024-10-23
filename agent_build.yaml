@@ -1061,7 +1061,6 @@ Resources:
             Functions:
               - Description: "Plots a Kaplan-Meier survival chart"
                 Name: "plot_kaplan_meier"
-                RequireConfirmation: "ENABLED"
                 Parameters:
                   biomarker_name:
                     Type: "string"
@@ -1085,7 +1084,6 @@ Resources:
                     Required: true
               - Description: "Fit a survival regression model with data in a S3 object"
                 Name: "fit_survival_regression"
-                RequireConfirmation: "ENABLED"
                 Parameters:
                   bucket:
                     Type: "string"
@@ -1103,7 +1101,6 @@ Resources:
             Functions:
               - Description: "compute the imaging biomarker features from lung CT scans within the tumor for a list of patient subject ID"
                 Name: "compute_imaging_biomarker"
-                requireConfirmation: "ENABLED"
                 Parameters:
                   subject_id:
                     Type: "array"
@@ -1150,7 +1147,6 @@ Resources:
             Functions:
               - Description: "create a bar chart"
                 Name: "bar_chart"
-                RequireConfirmation: "ENABLED"
                 Parameters:
                   title:
                     Type: "string"
