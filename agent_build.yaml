@@ -1216,7 +1216,7 @@ Resources:
                                             }
                                         }
                                     },
-                                "x-requiresConfirmation": "ENABLED"
+                                "x-requireConfirmation": "ENABLED"
                               }
                             }
                         }
