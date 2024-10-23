@@ -1061,7 +1061,7 @@ Resources:
             Functions:
               - Description: "Plots a Kaplan-Meier survival chart"
                 Name: "plot_kaplan_meier"
-                requireConfirmation: "ENABLED"
+                RequireConfirmation: "ENABLED"
                 Parameters:
                   biomarker_name:
                     Type: "string"
@@ -1085,7 +1085,7 @@ Resources:
                     Required: true
               - Description: "Fit a survival regression model with data in a S3 object"
                 Name: "fit_survival_regression"
-                requireConfirmation: "ENABLED"
+                RequireConfirmation: "ENABLED"
                 Parameters:
                   bucket:
                     Type: "string"
@@ -1150,7 +1150,7 @@ Resources:
             Functions:
               - Description: "create a bar chart"
                 Name: "bar_chart"
-                requireConfirmation: "ENABLED"
+                RequireConfirmation: "ENABLED"
                 Parameters:
                   title:
                     Type: "string"
