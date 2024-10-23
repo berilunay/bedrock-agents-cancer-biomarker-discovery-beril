@@ -5,7 +5,7 @@ Parameters:
   BedrockModelId:
     Type: String
     Description: The ID of the Foundation Model to use for the Agent
-    Default: anthropic.claude-3-5-sonnet-20240620-v1:0
+    Default: us.anthropic.claude-3-5-sonnet-20240620-v1:0
   EnvironmentName:
     Type: String
     Description: The name of the agent environment, used to differentiate agent application. Must be lowercase, contain one number, and be no more than 5 characters long.
@@ -958,7 +958,8 @@ Resources:
                             }
                           }
                         }
-                      }
+                      },
+                      "x-requireConfirmation": "ENABLED"
                     }
                   },
                   "/queryredshift": {
@@ -997,7 +998,8 @@ Resources:
                         "400": {
                           "description": "Bad request. One or more required fields are missing or invalid."
                         }
-                      }
+                      },
+                      "x-requireConfirmation": "ENABLED"
                     }
                   },
                   "/refinesql": {
@@ -1045,7 +1047,8 @@ Resources:
                         "400": {
                           "description": "Bad request. One or more required fields are missing or invalid."
                         }
-                      }
+                      },
+                      "x-requireConfirmation": "ENABLED"
                     }
                   }
                 }
@@ -1058,6 +1061,7 @@ Resources:
             Functions:
               - Description: "Plots a Kaplan-Meier survival chart"
                 Name: "plot_kaplan_meier"
+                requireConfirmation: "ENABLED"
                 Parameters:
                   biomarker_name:
                     Type: "string"
@@ -1081,6 +1085,7 @@ Resources:
                     Required: true
               - Description: "Fit a survival regression model with data in a S3 object"
                 Name: "fit_survival_regression"
+                requireConfirmation: "ENABLED"
                 Parameters:
                   bucket:
                     Type: "string"
@@ -1098,6 +1103,7 @@ Resources:
             Functions:
               - Description: "compute the imaging biomarker features from lung CT scans within the tumor for a list of patient subject ID"
                 Name: "compute_imaging_biomarker"
+                requireConfirmation: "ENABLED"
                 Parameters:
                   subject_id:
                     Type: "array"
@@ -1144,6 +1150,7 @@ Resources:
             Functions:
               - Description: "create a bar chart"
                 Name: "bar_chart"
+                requireConfirmation: "ENABLED"
                 Parameters:
                   title:
                     Type: "string"
@@ -1212,7 +1219,8 @@ Resources:
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    "x-requiresConfirmation": "ENABLED"
                                 }
                             }
                         }
@@ -1252,11 +1260,17 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - bedrock:InvokeModel
+                  - bedrock:InvokeModel*
                   - bedrock:Retrieve
                 Resource: 
-                  - !Sub arn:aws:bedrock:${AWS::Region}::foundation-model/${BedrockModelId}
+                  - !Sub arn:aws:bedrock:us-east-1::foundation-model/${BedrockModelId}
                   - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:knowledge-base/${BedrockKnowledgeBase}
+                  - !Sub arn:aws:bedrock:us-west-2::foundation-model/${BedrockModelId}
+                  - !Sub arn:aws:bedrock:us-east-1:${AWS::AccountId}::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0
+                  - !Sub arn:aws:bedrock:us-west-2:${AWS::AccountId}::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0
+                  - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.anthropic.claude-3-5-sonnet-20240620-v1:0
+                  - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.anthropic.claude-3-sonnet-20240229-v1:0
+
       
   ########################
   ##### ActionGroup #####
@@ -1485,7 +1499,7 @@ Resources:
   ImagingLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: ImagingBiomarkerLambdaExecutionRole
+      RoleName: !Sub 'ImagingBiomarkerLambdaExecutionRole-${AWS::Region}'
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -1807,7 +1821,7 @@ Resources:
   BedrockKBExecutionRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !Sub 'AmazonBedrockExecutionRoleForKnowledgeBase_${EnvironmentName}'
+      RoleName: !Sub 'AmazonBedrockExecutionRoleForKnowledgeBase_${EnvironmentName}_${AWS::Region}'
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
